@@ -1,7 +1,8 @@
 {
-  "name": "ch08",
+  "name": "react-02",
   "version": "0.1.0",
   "private": true,
+		"homepage": "https://tayaki71751.github.io/react-02",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
