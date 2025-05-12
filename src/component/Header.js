@@ -6,8 +6,8 @@ export default function Header(){
                 <Link to="/">단어장</Link>
             </h1>
             <div className="menu">
-                <a href="/" className="link">단어장</a>
-                <a href="/"  className="link">단어장</a>
+                <Link to="/" className="link">단어장</Link>
+                <Link to="/"  className="link">단어장</Link>
             </div>
         </div>
     )
