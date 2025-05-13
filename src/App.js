@@ -4,6 +4,8 @@ import Header from './component/Header'
 import DayList from './component/DayList.js'
 import Day from './component/Day.js'
 import EmptyPage from "./component/EmptyPage.js";
+import CreateWord from "./component/CreateWord.js";
+import CreateDay from "./component/CreateDay.js";
 /*
 BrowserRouter 라우팅 처리하는 컴포넌트
 Route   부분 화면들 
@@ -17,6 +19,8 @@ function App() {
       <Routes>
         <Route path="/" element={<DayList/>} />
         <Route path="/day/:day" element={<Day/>} />
+        <Route path="/create_word" element={<CreateWord/>} />
+        <Route path="/create_day" element={<CreateDay/>} />
         <Route path="*" element={<EmptyPage/>} />
       </Routes>
     </div>
