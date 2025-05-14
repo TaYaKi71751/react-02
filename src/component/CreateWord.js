@@ -1,65 +1,78 @@
-import { useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import useFetch from "../hooks/useFetch";
 
+
 export default function CreateWord() {
-    const { data: days } = useFetch("http://localhost:3010/days");
-    const navigate = useNavigate();
+  const { data:days } = useFetch("http://localhost:3010/days");
+  const navigate = useNavigate();
 
-    async function onSubmit(e) {
-        e.preventDefault();
-        const words = await fetch(`http://localhost:3010/words`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        const wordsData = await words.json();
-        const newWordId = Number(wordsData.sort((a, b) => (Number(b?.id) - Number(a?.id)))[0]?.id) + 1;
-        fetch(`http://localhost:3010/words/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id: newWordId,
-                day: dayRef.current.value,
-                eng: engRef.current.value,
-                kor: korRef.current.value,
-                isDone: false,
-            }),
-        }).then(res => {
-            if (res.ok) {
-                alert("생성이 완료 되었습니다");
-                navigate(`/day/${dayRef.current.value}`);
-            }
-        });
-    }
-    const engRef = useRef(null);
-    const korRef = useRef(null);
-    const dayRef = useRef(null);
 
-    return (
-        <form onSubmit={onSubmit}>
-            <div className="input_area">
-                <label>Eng</label>
-                <input type="text" placeholder="computer" ref={engRef} />
-            </div>
-            <div className="input_area">
-                <label>Kor</label>
-                <input type="text" placeholder="컴퓨터" ref={korRef} />
-            </div>
-            <div className="input_area">
-                <label>Day</label>
-                <select ref={dayRef}>
-                    {days.map(day => (
-                        <option key={day.id} value={day.day}>
-                            {day.day}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <button>저장</button>
-        </form>
-    );
+  const [eng, setEng] = useState("");
+  const [kor, setKor] = useState("");
+  const [day, setDay] = useState("");
+
+
+  function onSubmit(e) {
+    e.preventDefault();
+
+
+    fetch(`http://localhost:3010/words/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        day,
+        eng,
+        kor,
+        isDone: false,
+      }),
+    }).then(res => {
+      if (res.ok) {
+        alert("생성이 완료 되었습니다");
+        navigate(`/day/${day}`);
+      }
+    });
+  }
+
+
+  return (
+    <form onSubmit={onSubmit}>
+      <div className="input_area">
+        <label>Eng</label>
+        <input
+          type="text"
+          placeholder="computer"
+          value={eng}
+          onChange={(e) => setEng(e.target.value)}
+        />
+      </div>
+      <div className="input_area">
+        <label>Kor</label>
+        <input
+          type="text"
+          placeholder="컴퓨터"
+          value={kor}
+          onChange={(e) => setKor(e.target.value)}
+        />
+      </div>
+      <div className="input_area">
+        <label>Day</label>
+        <select
+          value={day}
+          onChange={(e) => setDay(e.target.value)}
+        >
+          <option value="">-- 선택하세요 --</option>
+          {days.map(dayItem => (
+            <option key={dayItem.id} value={dayItem.day}>
+              {dayItem.day}
+            </option>
+          ))}
+        </select>
+      </div>
+      <button>저장</button>
+    </form>
+  );
 }
+
